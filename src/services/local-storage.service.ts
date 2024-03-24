@@ -7,6 +7,7 @@ export class LocalStorageService {
   localStorage: Storage;
   BOOKMARKS = 'BOOKMARKS';
   PURCHASE = 'PURCHASE';
+  MONEY = 'MONEY';
 
   constructor() {
     this.localStorage = window.localStorage;
@@ -98,6 +99,7 @@ export class LocalStorageService {
           map[ticker] = stock;
         }
         this.localStorage.setItem(this.PURCHASE, JSON.stringify(map));
+        this.addMoney(stock.price);
         return true;
       }
     }
@@ -118,6 +120,7 @@ export class LocalStorageService {
   buy(ticker: string, name: string, qty: number, price: number) {
     let purchases: string = this.localStorage.getItem(this.PURCHASE);
     let map;
+    
     if (purchases) {
       map = JSON.parse(purchases);
       if (map[ticker]) {
@@ -139,5 +142,32 @@ export class LocalStorageService {
       };
     }
     this.localStorage.setItem(this.PURCHASE, JSON.stringify(map));
+    this.reduceMoney(qty * price);
+  }
+
+  getMoney() {
+    let money: string = this.localStorage.getItem(this.MONEY);
+    if (money) {
+      return parseFloat(money).toFixed(2);
+    } else {
+      this.localStorage.setItem(this.MONEY, '25000.00');
+      return "25000.00";
+    }
+  }
+
+  reduceMoney(amount: number) {
+    let money: string = this.localStorage.getItem(this.MONEY);
+    if (money) {
+      let newAmount = parseFloat(money) - amount;
+      this.localStorage.setItem(this.MONEY, newAmount.toFixed(2));
+    }
+  }
+
+  addMoney(amount: number) {
+    let money: string = this.localStorage.getItem(this.MONEY);
+    if (money) {
+      let newAmount = parseFloat(money) + amount;
+      this.localStorage.setItem(this.MONEY, newAmount.toFixed(2));
+    }
   }
 }

@@ -32,8 +32,10 @@
             <p class="name text-muted">{{highlights.name}}
             </p>
             <p>{{highlights.exchangeCode}}</p>
-            <button class="btn btn-success" (click)="openModal(content)">Buy</button>
-            <button class="btn btn-danger" (click)="openModal(sell)">Sell</button>
+            <div class="button-group">
+                <button class="btn btn-success" (click)="openModal(content)">Buy</button>
+                <button *ngIf="canSell" class="btn btn-danger" (click)="openModal(sell)">Sell</button>
+            </div>
 
 
             <ng-template #content let-modal>
@@ -52,6 +54,11 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col">
+                                <label>Money in Wallet: ${{money}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6 col-sm-12 quantity-label">
                                 <label for="quantity">Quantity: </label>
                             </div>
@@ -59,6 +66,9 @@
                                 <input type='number' class="form-control" required id="quantity" name="quantity"
                                     [(ngModel)]="quantity">
                             </div>
+                        </div>
+                        <div class="row" *ngIf="quantity * highlights.last > money">
+                            <span class="not-enough">Not enough money in wallet!</span>
                         </div>
                     </div>
                 </div>
@@ -69,8 +79,8 @@
                                 <label>Total : {{ highlights.last * quantity | number: '1.1-2'}}</label>
                             </div>
                             <div class="col align-right">
-                                <button type="button" class="btn btn-success" [disabled]="quantity<1"
-                                    (click)="closeModal()">Buy</button>
+                                <button type="button" class="btn btn-success" [disabled]="quantity<1 || quantity * highlights.last > money"
+                                    (click)="closeModal('buy')">Buy</button>
                             </div>
                         </div>
                     </div>
@@ -110,8 +120,8 @@
                             </div>
                             <div class="col align-left">
                                 <button type="button" class="btn btn-success"
-                                    [disabled]="quantity<1 || quantity > stock[1]['qty']"
-                                    (click)="closeModal(stock[0], quantity)">Sell</button>
+                                    [disabled]="quantity<1 || quantity > portfolio[1]['qty']"
+                                    (click)="closeModal('sell',portfolio)">Sell</button>
                             </div>
                         </div>
                     </div>

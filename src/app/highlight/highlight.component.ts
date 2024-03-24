@@ -28,6 +28,9 @@ export class HighlightComponent implements OnInit, OnDestroy {
   private highlightService: HighlightService;
   private storage: LocalStorageService;
   public quantity: number = 0;
+  portfolio;
+  public money: string;
+  public canSell: boolean = false;
 
   bookmarked: boolean;
 
@@ -42,7 +45,22 @@ export class HighlightComponent implements OnInit, OnDestroy {
     this.storage = storage;
   }
 
-  ngOnInit(): void {}
+  updateDate() {
+    this.portfolio = this.storage.getPurchases().filter((stock) => stock[0] == this.ticker)[0];
+    if (Array.isArray(this.portfolio) && this.portfolio.length > 0) {
+      if (this.portfolio[1].qty > 0) {
+        this.canSell = true;
+      } else {
+        this.canSell = false;
+      }
+    } else {
+      this.canSell = false;
+    }
+  }
+
+  ngOnInit(): void {
+    this.updateDate();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['highlights'] && this.highlights) {
@@ -89,24 +107,37 @@ export class HighlightComponent implements OnInit, OnDestroy {
 
   //Modal
   openModal(content) {
+    this.money = this.storage.getMoney();
     this.modalService.open(content, {
       ariaLabelledBy: 'Buy Stock',
     });
   }
 
-  closeModal() {
+  closeModal(type) {
     this.modalService.dismissAll();
-    this.addAlert({
-      type: 'success',
-      message: this.highlights.ticker + ' bought successfully!',
-    });
-    this.storage.buy(
-      this.highlights.ticker,
-      this.highlights.name,
-      this.quantity,
-      this.highlights.last
-    );
+    if (type == 'buy') {
+      this.storage.buy(
+        this.highlights.ticker,
+        this.highlights.name,
+        this.quantity,
+        this.highlights.last
+      );
+      this.addAlert({
+        type: 'success',
+        message: this.highlights.ticker + ' bought successfully!',
+      });
+    } else if (type == 'sell') {
+      this.storage.sell(
+        this.highlights.ticker,
+        this.quantity,
+      );
+      this.addAlert({
+        type: 'success',
+        message: this.highlights.ticker + ' sell successfully!',
+      });
+    }
     this.quantity = 0;
+    this.updateDate();
   }
 
   //Alerts

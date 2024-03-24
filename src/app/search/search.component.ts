@@ -15,6 +15,7 @@ export class SearchComponent implements OnInit {
   searchCtrl = new FormControl();
   filteredTicker: any;
   isLoading = false;
+  showErrorAlert = false;
 
   constructor(public router: Router, public http: HttpClient) {}
 
@@ -42,6 +43,12 @@ export class SearchComponent implements OnInit {
             this.filteredTicker = [];
           } else {
             this.filteredTicker = data;
+          }
+
+          if (this.filteredTicker.length == 0) {
+            this.showErrorAlert = true;
+          } else {
+            this.showErrorAlert = false;
           }
         },
         (err) => {

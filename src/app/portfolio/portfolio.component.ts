@@ -18,6 +18,7 @@ export class PortfolioComponent implements OnInit {
   loaded: boolean = false;
   BUY = 'buy';
   SELL = 'sell';
+  public money: string;
 
   constructor(
     public storage: LocalStorageService,
@@ -52,6 +53,8 @@ export class PortfolioComponent implements OnInit {
   }
 
   openModal(content) {
+    this.money = this.storage.getMoney();
+
     this.modalService.open(content, {
       ariaLabelledBy: 'Buy Stock',
     });

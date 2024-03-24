@@ -30,3 +30,13 @@ h1 {
   outline: none !important;
   box-shadow: none;
 }
+
+.error-alert {
+  width: 500px;
+  height: 50px;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+  background-color: RGB(218,184,174);
+  line-height: 50px;
+}

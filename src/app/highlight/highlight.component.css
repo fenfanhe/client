@@ -99,3 +99,17 @@ span.date {
 #quantity {
   border-radius: 0.5rem;
 }
+
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+  width: 150px;
+  margin-left: 100px;
+}
+
+.not-enough {
+  display: inline-block;
+  margin-top: 5px;
+  color: red;
+}
