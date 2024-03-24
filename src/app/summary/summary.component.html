@@ -1,0 +1,70 @@
+<div *ngIf="summary" class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <div class="container">
+                <div class="row margin-tb">
+                    <div class="col-6">
+                        <table>
+                            <tr>
+                                <td class="right font_weghit_bold">High Price:</td>
+                                <td >{{summary.high_price}}</td>
+                            </tr>
+                            <tr>
+                                <td class="right font_weghit_bold">Low Price:</td>
+                                <td>{{summary.low_price}} </td>
+                            </tr>
+                            <tr>
+                                <td class="right font_weghit_bold">Open Price:</td>
+                                <td >{{summary.open_price}}</td>
+                            </tr>
+                            <tr>
+                                <td class="right font_weghit_bold">Prev. Close:</td>
+                                <td >{{summary.prev_close}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="company" class="container">
+                <div class="row-xs-12 row-sm-12">
+                    <h2 style="text-decoration: underline;text-align: center;">
+                       About the company
+                    </h2>
+                    <div>
+                        <table class="company">
+                            <tr>
+                                <td class="font_weghit_bold">IPO Start Date:</td>
+                                <td>{{company.ipo}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font_weghit_bold">Industry:</td>
+                                <td>{{company.finnhubIndustry}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font_weghit_bold">Webpage:</td>
+                                <td><a href="{{company.weburl}}" target="_blank">{{company.weburl}}</a></td>
+                            </tr>
+                            <tr>
+                                <td class="font_weghit_bold"  style="display: block;text-align:center;">Company peers:</td>
+                                <td style=" display: flex;
+                                text-decoration: underline;
+                                color: #007bff;
+                                align-items: center;margin-top: 2vh;">
+                                    <p style="margin-right: 10px;" *ngFor="let peer of company.peers let i=index">
+                                        <a href="./details/{{peer}}">{{peer}}</a>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 margin-tb">
+            <highcharts-chart *ngIf="chartOptions" [Highcharts]="Highcharts" [constructorType]="'stockChart'"
+                [options]="chartOptions" style="width: 100%; height: 500px; display: block;">
+            </highcharts-chart>
+        </div>
+    </div>
+</div>
