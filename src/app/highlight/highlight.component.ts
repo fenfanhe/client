@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Company, SummaryService } from 'src/services/summary.service';
 
 @Component({
   selector: 'app-highlight',
@@ -31,18 +32,25 @@ export class HighlightComponent implements OnInit, OnDestroy {
   portfolio;
   public money: string;
   public canSell: boolean = false;
-
+  public company: Company;
   bookmarked: boolean;
-
   interval;
 
   constructor(
     service: HighlightService,
     storage: LocalStorageService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    public summaryService: SummaryService
   ) {
     this.highlightService = service;
     this.storage = storage;
+  }
+
+  getCompanyData() {
+    this.summaryService.getCompanyData(this.ticker)
+      .subscribe((results: Company) => {
+        this.company = { ...results };
+      });
   }
 
   updateDate() {
@@ -60,6 +68,7 @@ export class HighlightComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.updateDate();
+    this.getCompanyData();
   }
 
   ngOnChanges(changes: SimpleChanges) {

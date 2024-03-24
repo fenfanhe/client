@@ -19,6 +19,7 @@
 
 .card-content {
   cursor: pointer;
+  margin-top: 10px;
 }
 .align-right {
   text-align: right;

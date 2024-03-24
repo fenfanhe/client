@@ -11,15 +11,14 @@
     <div *ngIf="watchList.length != 0" class="container">
         <div class="row">
             <div *ngFor="let stock of watchList" class="col-12">
-                <div class="container stock-card">
+                <div class="container stock-card" style="padding-top: 0; padding-left: 5;">
                     <div class="row">
                         <div class="col">
-                            <button type="button" class="close" aria-label="Close"
+                            <button type="button" class="close" style="float:left;" aria-label="Close"
                                 (click)="removeBookmark(stock.ticker)">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-
                     </div>
                     <div class="row justify-content-end card-content" (click)="showDetails(stock.ticker)">
 
